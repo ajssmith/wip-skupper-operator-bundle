@@ -1,0 +1,23 @@
+piVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skupper-controller
+spec:
+  selector:
+    matchLabels:
+      application: skupper-controller
+  template:
+    spec:
+      containers:
+        - name: controller
+          env:
+            - name: RELATED_IMAGE_SKUPPER_CONTROLLER_IMAGE
+              value: registry.redhat.io/service-interconnect/skupper-controller-rhel9:2.0.0-3
+            - name: RELATED_IMAGE_SKUPPER_ROUTER_IMAGE
+              value: registry.redhat.io/service-interconnect/skupper-router-rhel9:3.2.0-1              
+            - name: RELATED_IMAGE_SKUPPER_KUBE_ADAPTOR_IMAGE
+              value: registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9:2.0.0-1
+            - name: RELATED_IMAGE_SKUPPER_NETWORK_OBSERVER_IMAGE
+              value: registry.redhat.io/service-interconnect/skupper-network-observer-rhel9:2.0.0-1
+            - name: RELATED_IMAGE_SKUPPER_CLI_IMAGE
+              value: registry.redhat.io/service-interconnect/skupper-cli-rhel9:2.0.0-1                                          

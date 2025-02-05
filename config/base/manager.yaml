@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skupper-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: skupper-controller
+  template:
+    metadata:
+      labels:
+        com.company: Red_Hat
+        rht.prod_name: Red_Hat_Service_Interconnect
+        rht.prod_ver: "2.0"
+        rht.comp: skupper-operator
+        rht.comp_ver: "2.0.0-rc1-rh-1"
+        rht.comp_t: application      
+        app.kubernetes.io/part-of: skupper
+        application: skupper-controller
+        app.kubernetes.io/name: skupper-controller
+        skupper.io/component: controller
+    spec:
+      serviceAccountName: skupper-controller
+      # Prevent kubernetes from injecting env vars for grant service
+      # as these then collide with those that actually configure the
+      # controller:
+      enableServiceLinks: false
+      # Please ensure that you can use SeccompProfile and do not use
+      # if your project must work on old Kubernetes
+      # versions < 1.19 or on vendors versions which
+      # do NOT support this field by default
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: controller
+          image: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9:2.0.0-3
+          imagePullPolicy: Always
+          command: ["/app/controller"]
+          args: ["-enable-grants", "-grant-server-autoconfigure"]
+          env:
+#            - name: RELATED_IMAGE_SKUPPER_CONTROLLER_IMAGE
+#              value: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9:2.0.0-3
+#            - name: RELATED_IMAGE_SKUPPER_ROUTER_IMAGE
+#              value: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-skupper-router-rhel9:3.2.0-1              
+#            - name: RELATED_IMAGE_SKUPPER_KUBE_ADAPTOR_IMAGE
+#              value: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-kube-adaptor-rhel9:2.0.0-1
+#            - name: RELATED_IMAGE_SKUPPER_NETWORK_OBSERVER_IMAGE
+#              value: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-network-observer-rhel9:2.0.0-1
+#            - name: RELATED_IMAGE_SKUPPER_CLI_IMAGE
+#              value: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-cli-rhel9:2.0.0-1                                          
+            - name: SKUPPER_KUBE_ADAPTOR_IMAGE
+              value: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-kube-adaptor-rhel9:2.0.0-1
+            - name: SKUPPER_KUBE_ADAPTOR_IMAGE_PULL_POLICY
+              value: Always
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: tls-credentials
+              mountPath: /etc/controller
+      volumes:
+        - name: tls-credentials
+          emptyDir: {}

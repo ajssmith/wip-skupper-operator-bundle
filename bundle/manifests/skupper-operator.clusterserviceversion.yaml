@@ -1,0 +1,461 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: |-
+      [
+        {
+          "apiVersion": "skupper.io/v2alpha1",
+          "kind": "AccessGrant",
+          "metadata": {
+            "name": "my-grant"
+          },
+          "spec": {
+            "expirationWindow": "1h",
+            "redemptionsAllowed": 10
+          }
+        },
+        {
+          "apiVersion": "skupper.io/v2alpha1",
+          "kind": "AccessToken",
+          "metadata": {
+            "name": "my-token"
+          },
+          "spec": {
+            "ca": "-----BEGIN CERTIFICATE-----\nMIIDNzCCAh+ … Q=\n-----END CERTIFICATE-----\n",
+            "code": "L1qCl2mZ7D81gbXp3ax4YT0K",
+            "url": "https://10.107.241.191:9090/86b80f6b-2b02-47ac-bab4-d285bb4f7b9d"
+          }
+        },
+        {
+          "apiVersion": "skupper.io/v2alpha1",
+          "kind": "AttachedConnector",
+          "metadata": {
+            "name": "backend",
+            "namespace": "other"
+          },
+          "spec": {
+            "port": 8080,
+            "selector": "app=backend",
+            "siteNamespace": "west"
+          }
+        },
+        {
+          "apiVersion": "skupper.io/v2alpha1",
+          "kind": "AttachedConnectorBinding",
+          "metadata": {
+            "name": "backend",
+            "namespace": "west"
+          },
+          "spec": {
+            "connectorNamespace": "other",
+            "routingKey": "backend"
+          }
+        },
+        {
+          "apiVersion": "skupper.io/v2alpha1",
+          "kind": "Certificate",
+          "metadata": {
+            "name": "west-certificate"
+          },
+          "spec": {
+            "client": true
+          }
+        },
+        {
+          "apiVersion": "skupper.io/v2alpha1",
+          "kind": "Connector",
+          "metadata": {
+            "name": "backend"
+          },
+          "spec": {
+            "port": 8080,
+            "routingKey": "backend",
+            "selector": "app=backend"
+          }
+        },
+        {
+          "apiVersion": "skupper.io/v2alpha1",
+          "kind": "Link",
+          "metadata": {
+            "name": "my-token"
+          },
+          "spec": {
+            "endpoints": [
+              {
+                "group": "skupper-router-1",
+                "host": "10.102.82.46",
+                "name": "inter-router",
+                "port": "55671"
+              },
+              {
+                "group": "skupper-router-1",
+                "host": "10.102.82.46",
+                "name": "edge",
+                "port": "45671"
+              }
+            ],
+            "tlsCredentials": "my-token"
+          }
+        },
+        {
+          "apiVersion": "skupper.io/v2alpha1",
+          "kind": "Listener",
+          "metadata": {
+            "name": "backend"
+          },
+          "spec": {
+            "host": "backend",
+            "port": 8080,
+            "routingKey": "backend"
+          }
+        },
+        {
+          "apiVersion": "skupper.io/v2alpha1",
+          "kind": "RouterAccess",
+          "metadata": {
+            "name": "west-access"
+          },
+          "spec": {
+            "issuer": "default"
+          }
+        },
+        {
+          "apiVersion": "skupper.io/v2alpha1",
+          "kind": "SecuredAccess",
+          "metadata": {
+            "name": "west-access"
+          },
+          "spec": {
+            "issuer": "default"
+          }
+        },
+        {
+          "apiVersion": "skupper.io/v2alpha1",
+          "kind": "Site",
+          "metadata": {
+            "name": "west"
+          },
+          "spec": {
+            "ha": true,
+            "linkAccess": "default"
+          }
+        }
+      ]
+    capabilities: Seamless Upgrades
+    categories: Integration & Delivery, Networking, Streaming & Messaging
+    certified: "false"
+    containerImage: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
+    createdAt: "2025-02-05T19:35:50Z"
+    description: Red Hat Service Interconnect Operator provides the ability to create a service network
+    features.operators.openshift.io/cnf: "false"
+    features.operators.openshift.io/cni: "false"
+    features.operators.openshift.io/csi: "false"
+    features.operators.openshift.io/disconnected: "true"
+    features.operators.openshift.io/fips-compliant: "false"
+    features.operators.openshift.io/proxy-aware: "false"
+    features.operators.openshift.io/tls-profiles: "false"
+    features.operators.openshift.io/token-auth-aws: "false"
+    features.operators.openshift.io/token-auth-azure: "false"
+    features.operators.openshift.io/token-auth-gcp: "false"
+    olm.skipRange: '>2.0.0-rh-rc0-1'
+    operators.openshift.io/infrastructure-features: '["disconnected"]'
+    operators.openshift.io/valid-subscription: '["Red Hat Service Interconnect"]'
+    operators.operatorframework.io/builder: operator-sdk-v1.39.0
+    operators.operatorframework.io/project_layout: go.kubebuilder.io/v4
+    repository: https://github.com/skupperproject/skupper
+    support: Red Hat
+  labels:
+    operatorframework.io/arch.amd64: supported
+    operatorframework.io/os.linux: supported
+  name: skupper-operator.v2.0.0-rc1
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+      - kind: AccessGrant
+        name: accessgrants.skupper.io
+        version: v2alpha1
+      - kind: AccessToken
+        name: accesstokens.skupper.io
+        version: v2alpha1
+      - kind: AttachedConnectorBinding
+        name: attachedconnectorbindings.skupper.io
+        version: v2alpha1
+      - kind: AttachedConnector
+        name: attachedconnectors.skupper.io
+        version: v2alpha1
+      - kind: Certificate
+        name: certificates.skupper.io
+        version: v2alpha1
+      - kind: Connector
+        name: connectors.skupper.io
+        version: v2alpha1
+      - kind: Link
+        name: links.skupper.io
+        version: v2alpha1
+      - kind: Listener
+        name: listeners.skupper.io
+        version: v2alpha1
+      - kind: RouterAccess
+        name: routeraccesses.skupper.io
+        version: v2alpha1
+      - kind: SecuredAccess
+        name: securedaccesses.skupper.io
+        version: v2alpha1
+      - kind: Site
+        name: sites.skupper.io
+        version: v2alpha1
+  description: |
+    Red Hat Service Interconnect enables communication between services running in different network locations.
+    It allows geographically distributed services to connect as if they were all running in the same site.
+
+    Each site is a namespace with a running Red Hat Service Interconnect instance.
+
+    The operator can only be installed at cluster level, watching for the skupper resources in all namespaces.
+  displayName: Red Hat Service Interconnect
+  icon:
+    - base64data: PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTQ1Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2UwMDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPlJlZEhhdC1Mb2dvLUhhdC1Db2xvcjwvdGl0bGU+PHBhdGggZD0iTTE1Ny43Nyw2Mi42MWExNCwxNCwwLDAsMSwuMzEsMy40MmMwLDE0Ljg4LTE4LjEsMTcuNDYtMzAuNjEsMTcuNDZDNzguODMsODMuNDksNDIuNTMsNTMuMjYsNDIuNTMsNDRhNi40Myw2LjQzLDAsMCwxLC4yMi0xLjk0bC0zLjY2LDkuMDZhMTguNDUsMTguNDUsMCwwLDAtMS41MSw3LjMzYzAsMTguMTEsNDEsNDUuNDgsODcuNzQsNDUuNDgsMjAuNjksMCwzNi40My03Ljc2LDM2LjQzLTIxLjc3LDAtMS4wOCwwLTEuOTQtMS43My0xMC4xM1oiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xMjcuNDcsODMuNDljMTIuNTEsMCwzMC42MS0yLjU4LDMwLjYxLTE3LjQ2YTE0LDE0LDAsMCwwLS4zMS0zLjQybC03LjQ1LTMyLjM2Yy0xLjcyLTcuMTItMy4yMy0xMC4zNS0xNS43My0xNi42QzEyNC44OSw4LjY5LDEwMy43Ni41LDk3LjUxLjUsOTEuNjkuNSw5MCw4LDgzLjA2LDhjLTYuNjgsMC0xMS42NC01LjYtMTcuODktNS42LTYsMC05LjkxLDQuMDktMTIuOTMsMTIuNSwwLDAtOC40MSwyMy43Mi05LjQ5LDI3LjE2QTYuNDMsNi40MywwLDAsMCw0Mi41Myw0NGMwLDkuMjIsMzYuMywzOS40NSw4NC45NCwzOS40NU0xNjAsNzIuMDdjMS43Myw4LjE5LDEuNzMsOS4wNSwxLjczLDEwLjEzLDAsMTQtMTUuNzQsMjEuNzctMzYuNDMsMjEuNzdDNzguNTQsMTA0LDM3LjU4LDc2LjYsMzcuNTgsNTguNDlhMTguNDUsMTguNDUsMCwwLDEsMS41MS03LjMzQzIyLjI3LDUyLC41LDU1LC41LDc0LjIyYzAsMzEuNDgsNzQuNTksNzAuMjgsMTMzLjY1LDcwLjI4LDQ1LjI4LDAsNTYuNy0yMC40OCw1Ni43LTM2LjY1LDAtMTIuNzItMTEtMjcuMTYtMzAuODMtMzUuNzgiLz48L3N2Zz4=
+      mediatype: image/svg+xml
+  install:
+    spec:
+      clusterPermissions:
+        - rules:
+            - apiGroups:
+                - ""
+              resources:
+                - nodes
+              verbs:
+                - get
+                - list
+                - watch
+            - apiGroups:
+                - ""
+              resources:
+                - configmaps
+                - pods
+                - pods/exec
+                - services
+                - secrets
+                - serviceaccounts
+                - events
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - delete
+                - patch
+            - apiGroups:
+                - apps
+              resources:
+                - deployments
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - delete
+                - patch
+            - apiGroups:
+                - route.openshift.io
+              resources:
+                - routes
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - delete
+                - update
+            - apiGroups:
+                - apps.openshift.io
+              resources:
+                - deploymentconfigs
+              verbs:
+                - get
+                - list
+                - watch
+            - apiGroups:
+                - networking.k8s.io
+              resources:
+                - ingresses
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - delete
+                - update
+            - apiGroups:
+                - projectcontour.io
+              resources:
+                - httpproxies
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - delete
+                - update
+            - apiGroups:
+                - gateway.networking.k8s.io
+              resources:
+                - gateways
+                - tlsroutes
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - delete
+                - update
+                - patch
+            - apiGroups:
+                - coordination.k8s.io
+              resources:
+                - leases
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - delete
+                - update
+            - apiGroups:
+                - rbac.authorization.k8s.io
+              resources:
+                - rolebindings
+                - roles
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - delete
+                - update
+            - apiGroups:
+                - skupper.io
+              resources:
+                - sites
+                - sites/status
+                - links
+                - links/status
+                - accesstokens
+                - accesstokens/status
+                - accessgrants
+                - accessgrants/status
+                - listeners
+                - listeners/status
+                - connectors
+                - connectors/status
+                - attachedconnectors
+                - attachedconnectors/status
+                - attachedconnectorbindings
+                - attachedconnectorbindings/status
+                - routeraccesses
+                - routeraccesses/status
+                - securedaccesses
+                - securedaccesses/status
+                - certificates
+                - certificates/status
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - delete
+          serviceAccountName: skupper-controller
+      deployments:
+        - name: skupper-controller
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                application: skupper-controller
+            strategy: {}
+            template:
+              metadata:
+                labels:
+                  app.kubernetes.io/name: skupper-controller
+                  app.kubernetes.io/part-of: skupper
+                  application: skupper-controller
+                  com.company: Red_Hat
+                  rht.comp: skupper-operator
+                  rht.comp_t: application
+                  rht.comp_ver: 2.0.0-rc1-rh-1
+                  rht.prod_name: Red_Hat_Service_Interconnect
+                  rht.prod_ver: "2.0"
+                  skupper.io/component: controller
+              spec:
+                containers:
+                  - args:
+                      - -enable-grants
+                      - -grant-server-autoconfigure
+                    command:
+                      - /app/controller
+                    env:
+                      - name: SKUPPER_KUBE_ADAPTOR_IMAGE
+                        value: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-kube-adaptor-rhel9:2.0.0-1
+                      - name: SKUPPER_KUBE_ADAPTOR_IMAGE_PULL_POLICY
+                        value: Always
+                    image: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
+                    imagePullPolicy: Always
+                    name: controller
+                    resources: {}
+                    securityContext:
+                      allowPrivilegeEscalation: false
+                      capabilities:
+                        drop:
+                          - ALL
+                      runAsNonRoot: true
+                    volumeMounts:
+                      - mountPath: /etc/controller
+                        name: tls-credentials
+                enableServiceLinks: false
+                securityContext:
+                  runAsNonRoot: true
+                  seccompProfile:
+                    type: RuntimeDefault
+                serviceAccountName: skupper-controller
+                volumes:
+                  - emptyDir: {}
+                    name: tls-credentials
+    strategy: deployment
+  installModes:
+    - supported: false
+      type: OwnNamespace
+    - supported: false
+      type: SingleNamespace
+    - supported: false
+      type: MultiNamespace
+    - supported: true
+      type: AllNamespaces
+  keywords:
+    - skupper
+    - service
+    - mesh
+    - van
+  links:
+    - name: Skupper Operator
+      url: https://github.com/skupperproject/skupper-operator
+  maintainers:
+    - email: skupper@googlegroups.com
+      name: Skupper Community
+  maturity: stable
+  minKubeVersion: 1.25.0
+  provider:
+    name: Skupper Project
+    url: https://skupper.io
+  relatedImages:
+    - image: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
+      name: controller
+    - image: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
+      name: service-interconnect-controller-rhel9-2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222-annotation
+  replaces: skupper-operator.v2.0.0-rc0-rh-1
+  selector: {}
+  version: 2.0.0-rc1

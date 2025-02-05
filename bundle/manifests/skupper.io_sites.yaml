@@ -1,0 +1,162 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  name: sites.skupper.io
+spec:
+  group: skupper.io
+  names:
+    kind: Site
+    plural: sites
+    singular: site
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: The status of the site
+      jsonPath: .status.status
+      name: Status
+      type: string
+    - description: The number of sites in the network
+      jsonPath: .status.sitesInNetwork
+      name: Sites In Network
+      type: integer
+    - description: Any human readable message relevant to the site
+      jsonPath: .status.message
+      name: Message
+      type: string
+    name: v2alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              defaultIssuer:
+                type: string
+              edge:
+                type: boolean
+              ha:
+                type: boolean
+              linkAccess:
+                type: string
+              serviceAccount:
+                type: string
+              settings:
+                additionalProperties:
+                  type: string
+                type: object
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      format: date-time
+                      type: string
+                    message:
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-
+                        A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              defaultIssuer:
+                type: string
+              endpoints:
+                items:
+                  properties:
+                    group:
+                      type: string
+                    host:
+                      type: string
+                    name:
+                      type: string
+                    port:
+                      type: string
+                  type: object
+                type: array
+              message:
+                type: string
+              network:
+                items:
+                  properties:
+                    id:
+                      type: string
+                    links:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          operational:
+                            type: boolean
+                          remoteSiteId:
+                            type: string
+                          remoteSiteName:
+                            type: string
+                        type: object
+                      type: array
+                    name:
+                      type: string
+                    namespace:
+                      type: string
+                    platform:
+                      type: string
+                    services:
+                      items:
+                        properties:
+                          connectors:
+                            items:
+                              type: string
+                            type: array
+                          listeners:
+                            items:
+                              type: string
+                            type: array
+                          routingKey:
+                            type: string
+                        type: object
+                      type: array
+                    version:
+                      type: string
+                  type: object
+                type: array
+              sitesInNetwork:
+                type: integer
+              status:
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

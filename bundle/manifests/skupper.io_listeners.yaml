@@ -1,0 +1,123 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  name: listeners.skupper.io
+spec:
+  group: skupper.io
+  names:
+    kind: Listener
+    plural: listeners
+    singular: listener
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: The key that ties connectors and listeners together
+      jsonPath: .spec.routingKey
+      name: Routing Key
+      type: string
+    - description: The port the service listens on
+      jsonPath: .spec.port
+      name: Port
+      type: integer
+    - description: The name of the service
+      jsonPath: .spec.host
+      name: Host
+      type: string
+    - description: The status of the listener
+      jsonPath: .status.status
+      name: Status
+      type: string
+    - description: Whether there is at least one connector in the network with a matching
+        routing key.
+      jsonPath: .status.hasMatchingConnector
+      name: Has Matching Connector
+      type: boolean
+    - description: Any human readable message relevant to the listener
+      jsonPath: .status.message
+      name: Message
+      type: string
+    name: v2alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              exposePodsByName:
+                type: boolean
+              host:
+                type: string
+              port:
+                type: integer
+              routingKey:
+                type: string
+              settings:
+                additionalProperties:
+                  type: string
+                type: object
+              tlsCredentials:
+                type: string
+              type:
+                type: string
+            required:
+            - routingKey
+            - host
+            - port
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      format: date-time
+                      type: string
+                    message:
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-
+                        A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              hasMatchingConnector:
+                type: boolean
+              message:
+                type: string
+              status:
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null
