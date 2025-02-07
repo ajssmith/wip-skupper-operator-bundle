@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skupper-controller
+spec:
+  selector:
+    matchLabels:
+      application: skupper-controller
+  template:
+    metadata:
+      labels:
+        control-plane: controller-manager
+        com.company: Red_Hat
+        rht.prod_name: Red_Hat_Service_Interconnect
+        rht.prod_ver: "2.0"
+        rht.comp: skupper-operator
+        rht.comp_ver: "2.0.0-rc1-rh-1"
+        rht.comp_t: application  

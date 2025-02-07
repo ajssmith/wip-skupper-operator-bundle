@@ -146,7 +146,7 @@ metadata:
     categories: Integration & Delivery, Networking, Streaming & Messaging
     certified: "false"
     containerImage: registry.redhat.io/service-interconnect/skupper-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
-    createdAt: "2025-02-07T14:33:23Z"
+    createdAt: "2025-02-07T21:37:06Z"
     description: Red Hat Service Interconnect Operator provides the ability to create a service network
     features.operators.openshift.io/cnf: "false"
     features.operators.openshift.io/cni: "false"
@@ -385,6 +385,7 @@ spec:
                   app.kubernetes.io/part-of: skupper
                   application: skupper-controller
                   com.company: Red_Hat
+                  control-plane: controller-manager
                   rht.comp: skupper-operator
                   rht.comp_t: application
                   rht.comp_ver: 2.0.0-rc1-rh-1
@@ -462,8 +463,6 @@ spec:
     name: Skupper Project
     url: https://skupper.io
   relatedImages:
-    - image: registry.redhat.io/service-interconnect/skupper-skupper-router-rhel9@sha256:05dac819052db8c89b56d37d0f5385d51135dbad19310e7bba4c73d0ad78d081
-      name: skupper-router-image
     - image: registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9@sha256:f256ea71c9f18e85170ef90ae2d46080a7e57174710e01f2418d6b6edadffaba
       name: skupper-kube-adaptor-image
     - image: registry.redhat.io/service-interconnect/skupper-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
@@ -474,6 +473,8 @@ spec:
       name: skupper_kube_adaptor_image
     - image: registry.redhat.io/service-interconnect/skupper-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
       name: service-interconnect-controller-rhel9-2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222-annotation
+    - image: registry.redhat.io/service-interconnect/skupper-skupper-router-rhel9@sha256:05dac819052db8c89b56d37d0f5385d51135dbad19310e7bba4c73d0ad78d081
+      name: skupper-router-image
   replaces: skupper-operator.v2.0.0-rc0-rh-1
   selector: {}
   version: 2.0.0-rc1

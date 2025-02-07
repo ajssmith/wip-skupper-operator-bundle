@@ -69,8 +69,5 @@ spec:
   provider:
     name: Skupper Project
     url: https://skupper.io
-  relatedImages:
-  - name: skupper-controller
-    image: registry.redhat.io/service-interconnect/skupper-controller-rhel9@sha256:1234
   selector: {}
   version: 2.0.0-rc1

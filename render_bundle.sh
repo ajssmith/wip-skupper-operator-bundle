@@ -15,59 +15,59 @@ function error() {
   exit 1
 }
 
-function getImageSHA() {
-    IMAGE="$1"
-    docker image pull "${IMAGE}" > /dev/null 2>&1
-    docker image inspect --format='{{index .RepoDigests 0}}' "${IMAGE}" || exit 1
-}
+#function getImageSHA() {
+#    IMAGE="$1"
+#    docker image pull "${IMAGE}" > /dev/null 2>&1
+#    docker image inspect --format='{{index .RepoDigests 0}}' "${IMAGE}" || exit 1
+#}
 
-function retrieveBrewBuilds() {
-    read_var DATA_PLANE_TAG "Data plane version" true ""
-    read_var CONTROL_PLANE_TAG "Control plane version" true ""
-    echo
-    echo Retrieving brewkoji builds
-    echo
-    if python scripts/get_image_builds.py --data-plane-tag "${DATA_PLANE_TAG}" --control-plane-tag "${CONTROL_PLANE_TAG}"; then
-      echo
-      echo Enter builds to use
-      echo
-      read_var ROUTER_BUILD "Skupper router build" false ""
-      read_var CONTROLLER_BUILD "Controller build" false ""
-      read_var KUBE_ADAPTOR_BUILD "Kube adaptor build" false ""
-      read_var NETWORK_OBSERVER_BUILD "Network observer build" false ""
-      read_var CLI_BUILD "CLI build" false ""
-      getBrewImageSHAs
-    else
-      echo "Unable to list builds from brewkoji"
-      read_var CONTINUESHA "Do you want to provide SHAs manually?" true "yes" "yes" "no"
-      [[ "${CONTINUESHA,,}" = "no" ]] && exit 0
-      echo
-    fi
-}
+#function retrieveBrewBuilds() {
+#    read_var DATA_PLANE_TAG "Data plane version" true ""
+#    read_var CONTROL_PLANE_TAG "Control plane version" true ""
+#    echo
+#    echo Retrieving brewkoji builds
+#    echo
+#    if python scripts/get_image_builds.py --data-plane-tag "${DATA_PLANE_TAG}" --control-plane-tag "${CONTROL_PLANE_TAG}"; then
+#      echo
+#      echo Enter builds to use
+#      echo
+#      read_var ROUTER_BUILD "Skupper router build" false ""
+#      read_var CONTROLLER_BUILD "Controller build" false ""
+#      read_var KUBE_ADAPTOR_BUILD "Kube adaptor build" false ""
+#      read_var NETWORK_OBSERVER_BUILD "Network observer build" false ""
+#      read_var CLI_BUILD "CLI build" false ""
+#      getBrewImageSHAs
+#    else
+#      echo "Unable to list builds from brewkoji"
+#      read_var CONTINUESHA "Do you want to provide SHAs manually?" true "yes" "yes" "no"
+#      [[ "${CONTINUESHA,,}" = "no" ]] && exit 0
+#      echo
+#    fi
+#}
 
-function getBrewImageSHAs() {
-    echo
-    echo "Retrieving image SHAs ..."
-    python scripts/get_image_shas.py \
-      --controller-build "${CONTROLLER_BUILD}" \
-      --router-build "${ROUTER_BUILD}" \
-      --kube-adaptor-build "${KUBE_ADAPTOR_BUILD}" \
-      --network-observer-build "${NETWORK_OBSERVER_BUILD}" \
-      --cli-build "${CLI_BUILD}" \
-      > /tmp/imageshas.$$.json    
-
-      SKUPPER_ROUTER_SHA=""
-      CONTROLLER_SHA=""
-      KUBE_ADAPTOR_SHA=""
-      NETWORK_OBSERVER_SHA=""
-      CLI_SHA=""
-
-      [[ -n "${ROUTER_BUILD}" ]] && SKUPPER_ROUTER_SHA=$(jq -r ".\"${ROUTER_BUILD}\"" /tmp/imageshas.$$.json)
-      [[ -n "${CONTROLLER_BUILD}" ]] && CONTROLLER_SHA=$(jq -r ".\"${CONTROLLER_BUILD}\"" /tmp/imageshas.$$.json)
-      [[ -n "${KUBE_ADAPTOR_BUILD}" ]] && KUBE_ADAPTOR_SHA=$(jq -r ".\"${KUBE_ADAPTOR_BUILD}\"" /tmp/imageshas.$$.json)
-      [[ -n "${NETWORK_OBSERVER_BUILD}" ]] && NETWORK_OBSERVER_SHA=$(jq -r ".\"${NETWORK_OBSERVER_BUILD}\"" /tmp/imageshas.$$.json)
-      [[ -n "${CLI_BUILD}" ]] && CLI_SHA=$(jq -r ".\"${CLI_BUILD}\"" /tmp/imageshas.$$.json)
-}
+#function getBrewImageSHAs() {
+#    echo
+#    echo "Retrieving image SHAs ..."
+#    python scripts/get_image_shas.py \
+#      --controller-build "${CONTROLLER_BUILD}" \
+#      --router-build "${ROUTER_BUILD}" \
+#      --kube-adaptor-build "${KUBE_ADAPTOR_BUILD}" \
+#      --network-observer-build "${NETWORK_OBSERVER_BUILD}" \
+#      --cli-build "${CLI_BUILD}" \
+#      > /tmp/imageshas.$$.json    
+#
+#      SKUPPER_ROUTER_SHA=""
+#      CONTROLLER_SHA=""
+#      KUBE_ADAPTOR_SHA=""
+#      NETWORK_OBSERVER_SHA=""
+#      CLI_SHA=""
+#
+#      [[ -n "${ROUTER_BUILD}" ]] && SKUPPER_ROUTER_SHA=$(jq -r ".\"${ROUTER_BUILD}\"" /tmp/imageshas.$$.json)
+#      [[ -n "${CONTROLLER_BUILD}" ]] && CONTROLLER_SHA=$(jq -r ".\"${CONTROLLER_BUILD}\"" /tmp/imageshas.$$.json)
+#      [[ -n "${KUBE_ADAPTOR_BUILD}" ]] && KUBE_ADAPTOR_SHA=$(jq -r ".\"${KUBE_ADAPTOR_BUILD}\"" /tmp/imageshas.$$.json)
+#      [[ -n "${NETWORK_OBSERVER_BUILD}" ]] && NETWORK_OBSERVER_SHA=$(jq -r ".\"${NETWORK_OBSERVER_BUILD}\"" /tmp/imageshas.$$.json)
+#      [[ -n "${CLI_BUILD}" ]] && CLI_SHA=$(jq -r ".\"${CLI_BUILD}\"" /tmp/imageshas.$$.json)
+#}
 
 ###############################################################################
 ###############################################################################
@@ -111,50 +111,52 @@ echo "*****************************************************"
 ###############################################################################
 ###############################################################################
 # Clone upstream repo 
-git config --global core.sshCommand 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-rm -fr upstream
-git clone "${UPSTREAM_CLONE_URL}" upstream
-rc=$?
-if [[ $rc -ne 0 ]]; then
-   echo "ERROR: Could not clone upstream release repo."
-   exit 2
-fi
-pushd upstream && git checkout "${UPSTREAM_CLONE_SHA}"
-popd
+#git config --global core.sshCommand 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+#rm -fr upstream
+#git clone "${UPSTREAM_CLONE_URL}" upstream
+#rc=$?
+#if [[ $rc -ne 0 ]]; then
+#   echo "ERROR: Could not clone upstream release repo."
+#   exit 2
+#fi
+#pushd upstream && git checkout "${UPSTREAM_CLONE_SHA}"
+#popd
 
 # remove old
-rm -rf config/crd
-rm -rf config/rbac
-rm -rf config/samples
+#rm -rf config/crd
+#rm -rf config/rbac
+#rm -rf config/samples
 
 # copy crd, rbac and samples config
-cp -R upstream/config/crd config
-cp -R upstream/config/rbac config
-cp -R upstream/config/samples config
+#cp -R upstream/config/crd config
+#cp -R upstream/config/rbac config
+#cp -R upstream/config/samples config
+#cp upstream/config/base/manager.yaml config/base
+#cp upstream/config/base/service_account.yaml config/base
 
-rm -Rf upstream
+#rm -Rf upstream
 
 ###############################################################################
 ###############################################################################
 #source image-script.sh 
 #ERRATA_ID=145073
-echo
-echo Retrieving builds from Errata Advisory ...
-echo
-if python scripts/get_errata_image_builds.py --errata "${ERRATA_ID}" > /tmp/errata_builds.$$.json; then
-  ROUTER_BUILD=$(jq -r '."skupper-router-container"' /tmp/errata_builds.$$.json)
-  CONTROLLER_BUILD=$(jq -r '."skupper-controller-container"' /tmp/errata_builds.$$.json)
-  KUBE_ADAPTOR_BUILD=$(jq -r '."skupper-kube-adaptor-container"' /tmp/errata_builds.$$.json)
-  NETWORK_OBSERVER_BUILD=$(jq -r '."skupper-network-observer-container"' /tmp/errata_builds.$$.json)
-  CLI_BUILD=$(jq -r '."skupper-cli-container"' /tmp/errata_builds.$$.json)
-  getBrewImageSHAs
-else
-  echo "Unable to retrieve builds from errata tool"
-  read_var CONTINUESHA "Do you want to provide brew builds manually?" true "yes" "yes" "no"
-  [[ "${CONTINUESHA,,}" = "no" ]] && exit 0
-  echo
-  retrieveBrewBuilds
-fi
+#echo
+#echo Retrieving builds from Errata Advisory ...
+#echo
+#if python scripts/get_errata_image_builds.py --errata "${ERRATA_ID}" > /tmp/errata_builds.$$.json; then
+#  ROUTER_BUILD=$(jq -r '."skupper-router-container"' /tmp/errata_builds.$$.json)
+#  CONTROLLER_BUILD=$(jq -r '."skupper-controller-container"' /tmp/errata_builds.$$.json)
+#  KUBE_ADAPTOR_BUILD=$(jq -r '."skupper-kube-adaptor-container"' /tmp/errata_builds.$$.json)
+#  NETWORK_OBSERVER_BUILD=$(jq -r '."skupper-network-observer-container"' /tmp/errata_builds.$$.json)
+#  CLI_BUILD=$(jq -r '."skupper-cli-container"' /tmp/errata_builds.$$.json)
+#  getBrewImageSHAs
+#else
+#  echo "Unable to retrieve builds from errata tool"
+#  read_var CONTINUESHA "Do you want to provide brew builds manually?" true "yes" "yes" "no"
+#  [[ "${CONTINUESHA,,}" = "no" ]] && exit 0
+#  echo
+#  retrieveBrewBuilds
+#fi
 
 # csv="config/manifests/patch-env-var-images.yaml"
 # if [[ -n "${CONTROLLER_SHA}" ]]; then

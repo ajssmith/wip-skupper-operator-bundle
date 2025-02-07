@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skupper-controller
+spec:
+  selector:
+    matchLabels:
+      application: skupper-controller
+  template:
+    spec:
+      containers:
+        - name: controller
+          image: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9:2.0.0-3

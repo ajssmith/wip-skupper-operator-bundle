@@ -1,0 +1,18 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    operators.openshift.io/valid-subscription: '["Red Hat Service Interconnect"]'
+    operators.openshift.io/infrastructure-features: '["disconnected"]'
+    features.operators.openshift.io/disconnected: "true" # Specify whether an Operator leverages the spec.relatedImages CSV field and can run without an internet connection by referring to any related image by its digest.
+    features.operators.openshift.io/fips-compliant: "false" # Specify whether an Operator accepts the FIPS-140 configuration of the underlying platform and works on nodes that are booted into FIPS mode. In this mode, the Operator and any workloads it manages (operands) are solely calling the Red Hat Enterprise Linux (RHEL) cryptographic library submitted for FIPS-140 validation.
+    features.operators.openshift.io/proxy-aware: "false" # Specify whether an Operator supports running on a cluster behind a proxy by accepting the standard HTTP_PROXY and HTTPS_PROXY proxy environment variables. If applicable, the Operator passes this information to the workload it manages (operands).
+    features.operators.openshift.io/tls-profiles: "false" # Specify whether an Operator implements well-known tunables to modify the TLS cipher suite used by the Operator and, if applicable, any of the workloads it manages (operands).
+    features.operators.openshift.io/token-auth-aws: "false" # Specify whether an Operator supports configuration for tokenzied authentication with AWS APIs via AWS Secure Token Service (STS) by using the Cloud Credential Operator (CCO).
+    features.operators.openshift.io/token-auth-azure: "false" # Specify whether an Operator supports configuration for tokenzied authentication with Azure APIs via Azure Managed Identity by using the Cloud Credential Operator (CCO).
+    features.operators.openshift.io/token-auth-gcp: "false" # Specify whether an Operator supports configuration for tokenzied authentication with Google Cloud APIs via GCP Workload Identity Foundation (WIF) by using the Cloud Credential Operator (CCO).
+    features.operators.openshift.io/cnf: "false" # Specify whether an Operator provides a Cloud-Native Network Function (CNF) Kubernetes plugin.
+    features.operators.openshift.io/cni: "false" # Specify whether an Operator provides a Container Network Interface (CNI) Kubernetes plugin.
+    features.operators.openshift.io/csi: "false" # Specify whether an Operator provides a Container Storage Interface (CSI) Kubernetes plugin.
+  name: skupper-operator.v2.0.0-rc1-rh-1
+  namespace: placeholder
