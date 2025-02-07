@@ -1,6 +1,3 @@
 resources:
 - manager.yaml
 - service_account.yaml
-
-#patches:
-#  - path: patch-add-related-images.yaml

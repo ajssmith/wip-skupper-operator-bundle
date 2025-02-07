@@ -145,8 +145,8 @@ metadata:
     capabilities: Seamless Upgrades
     categories: Integration & Delivery, Networking, Streaming & Messaging
     certified: "false"
-    containerImage: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
-    createdAt: "2025-02-05T19:35:50Z"
+    containerImage: registry.redhat.io/service-interconnect/skupper-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
+    createdAt: "2025-02-07T14:33:23Z"
     description: Red Hat Service Interconnect Operator provides the ability to create a service network
     features.operators.openshift.io/cnf: "false"
     features.operators.openshift.io/cni: "false"
@@ -399,11 +399,21 @@ spec:
                     command:
                       - /app/controller
                     env:
+                      - name: RELATED_IMAGE_SKUPPER_ROUTER_IMAGE
+                        value: registry.redhat.io/service-interconnect/skupper-skupper-router-rhel9@sha256:05dac819052db8c89b56d37d0f5385d51135dbad19310e7bba4c73d0ad78d081
+                      - name: RELATED_IMAGE_SKUPPER_KUBE_ADAPTOR_IMAGE
+                        value: registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9@sha256:f256ea71c9f18e85170ef90ae2d46080a7e57174710e01f2418d6b6edadffaba
+                      - name: SKUPPER_CONTROLLER_IMAGE
+                        value: registry.redhat.io/service-interconnect/skupper-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
+                      - name: SKUPPER_ROUTER_IMAGE
+                        value: registry.redhat.io/service-interconnect/skupper-skupper-router-rhel9@sha256:05dac819052db8c89b56d37d0f5385d51135dbad19310e7bba4c73d0ad78d081
+                      - name: SKUPPER_ROUTER_IMAGE_PULL_POLICY
+                        value: Always
                       - name: SKUPPER_KUBE_ADAPTOR_IMAGE
-                        value: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-kube-adaptor-rhel9:2.0.0-1
+                        value: registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9@sha256:f256ea71c9f18e85170ef90ae2d46080a7e57174710e01f2418d6b6edadffaba
                       - name: SKUPPER_KUBE_ADAPTOR_IMAGE_PULL_POLICY
                         value: Always
-                    image: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
+                    image: registry.redhat.io/service-interconnect/skupper-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
                     imagePullPolicy: Always
                     name: controller
                     resources: {}
@@ -452,9 +462,17 @@ spec:
     name: Skupper Project
     url: https://skupper.io
   relatedImages:
-    - image: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
+    - image: registry.redhat.io/service-interconnect/skupper-skupper-router-rhel9@sha256:05dac819052db8c89b56d37d0f5385d51135dbad19310e7bba4c73d0ad78d081
+      name: skupper-router-image
+    - image: registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9@sha256:f256ea71c9f18e85170ef90ae2d46080a7e57174710e01f2418d6b6edadffaba
+      name: skupper-kube-adaptor-image
+    - image: registry.redhat.io/service-interconnect/skupper-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
       name: controller
-    - image: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
+    - image: registry.redhat.io/service-interconnect/skupper-skupper-router-rhel9@sha256:05dac819052db8c89b56d37d0f5385d51135dbad19310e7bba4c73d0ad78d081
+      name: skupper_router_image
+    - image: registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9@sha256:f256ea71c9f18e85170ef90ae2d46080a7e57174710e01f2418d6b6edadffaba
+      name: skupper_kube_adaptor_image
+    - image: registry.redhat.io/service-interconnect/skupper-controller-rhel9@sha256:2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222
       name: service-interconnect-controller-rhel9-2c1463f759ecba7fdcaaba28ef5da8f9f2ce1a5b3ee7e420dec4d1e25d6fa222-annotation
   replaces: skupper-operator.v2.0.0-rc0-rh-1
   selector: {}
