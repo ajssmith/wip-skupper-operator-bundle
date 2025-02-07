@@ -7,5 +7,6 @@ resources:
 - ../base
 - ../samples
 
-#patches:
-#  - path: patch-add-related-images.yaml
+
+patches:
+  - path: patch-env-var-images.yaml

@@ -156,40 +156,35 @@ else
   retrieveBrewBuilds
 fi
 
-csv="config/manifests/patch-add-related-images.yaml"
-if [[ -n "${CONTROLLER_SHA}" ]]; then
-    sed -ri "s#(registry.redhat.io/service-interconnect/skupper-controller-rhel9@).*#\1${CONTROLLER_SHA}#g" ${csv} || error "Error updating controller image SHA"
-fi
-if [[ -n "${SKUPPER_ROUTER_SHA}" ]]; then
-    sed -ri "s#(registry.redhat.io/service-interconnect/skupper-router-rhel9@).*#\1${SKUPPER_ROUTER_SHA}#g" ${csv} || error "Error updating skupper-router image SHA"
-fi
-if [[ -n "${KUBE_ADAPTOR_SHA}" ]]; then
-    sed -ri "s#(registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9@).*#\1${KUBE_ADAPTOR_SHA}#g" ${csv} || error "Error updating kube-adaptor image SHA"
-fi
-if [[ -n "${NETWORK_OBSERVER_SHA}" ]]; then
-    sed -ri "s#(registry.redhat.io/service-interconnect/skupper-network-observer-rhel9@).*#\1${NETWORK_OBSERVER_SHA}#g" ${csv} || error "Error updating network-observer image SHA"
-fi
-if [[ -n "${CLI_SHA}" ]]; then
-    sed -ri "s#(registry.redhat.io/service-interconnect/skupper-cli-rhel9@).*#\1${CLI_SHA}#g" ${csv} || error "Error updating cli image SHA"
-fi
-
-deploy="config/manifests/patch-add-env-var-related-images.yaml"
-if [[ -n "${SKUPPER_ROUTER_SHA}" ]]; then
-    sed -ri "s#(registry.redhat.io/service-interconnect/skupper-router-rhel9@).*#\1${SKUPPER_ROUTER_SHA}#g" ${deploy} || error "Error updating skupper-router image SHA"
-fi
-if [[ -n "${KUBE_ADAPTOR_SHA}" ]]; then
-    sed -ri "s#(registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9@).*#\1${KUBE_ADAPTOR_SHA}#g" ${deploy} || error "Error updating kube-adaptor image SHA"
-fi
+# csv="config/manifests/patch-env-var-images.yaml"
+# if [[ -n "${CONTROLLER_SHA}" ]]; then
+#     sed -ri "s#(registry.redhat.io/service-interconnect/skupper-controller-rhel9@).*#\1${CONTROLLER_SHA}#g" ${csv} || error "Error updating controller image SHA"
+# fi
+# if [[ -n "${SKUPPER_ROUTER_SHA}" ]]; then
+#     sed -ri "s#(registry.redhat.io/service-interconnect/skupper-router-rhel9@).*#\1${SKUPPER_ROUTER_SHA}#g" ${csv} || error "Error updating skupper-router image SHA"
+# fi
+# if [[ -n "${KUBE_ADAPTOR_SHA}" ]]; then
+#     sed -ri "s#(registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9@).*#\1${KUBE_ADAPTOR_SHA}#g" ${csv} || error "Error updating kube-adaptor image SHA"
+# fi
+# if [[ -n "${NETWORK_OBSERVER_SHA}" ]]; then
+#     sed -ri "s#(registry.redhat.io/service-interconnect/skupper-network-observer-rhel9@).*#\1${NETWORK_OBSERVER_SHA}#g" ${csv} || error "Error updating network-observer image SHA"
+# fi
+# if [[ -n "${CLI_SHA}" ]]; then
+#     sed -ri "s#(registry.redhat.io/service-interconnect/skupper-cli-rhel9@).*#\1${CLI_SHA}#g" ${csv} || error "Error updating cli image SHA"
+# fi
+# if [[ -n "${SKUPPER_ROUTER_SHA}" ]]; then
+#     sed -ri "s#(registry.redhat.io/service-interconnect/skupper-router-rhel9@).*#\1${SKUPPER_ROUTER_SHA}#g" ${csv} || error "Error updating skupper-router image SHA"
+# fi
+# if [[ -n "${KUBE_ADAPTOR_SHA}" ]]; then
+#     sed -ri "s#(registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9@).*#\1${KUBE_ADAPTOR_SHA}#g" ${csv} || error "Error updating kube-adaptor image SHA"
+# fi
 
 ###############################################################################
 ###############################################################################
-# Clean previous bundle
-#VERSION=2.0.0-rc1
-#CHANNELS="stable-2,stable-v2.0"
-#DEFAULT_CHANNEL="stable-2"
-
+csv_out="./bundle/manifests/skupper-operator.clusterserviceversion.yaml"
 rm -rf bundle
 kubectl kustomize config/manifests | operator-sdk generate bundle -q --overwrite --version $FULL_VERSION --use-image-digests --channels $BUNDLE_CHANNELS --default-channel $BUNDLE_DEFAULT_CHANNEL
+sed -i 's/registry-proxy.engineering.redhat.com\/rh-osbs\/service-interconnect/registry.redhat.io\/service-interconnect\/skupper/g' ${csv_out}
 operator-sdk bundle validate ./bundle
 
 exit 0
