@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skupper-controller
+spec:
+  selector:
+    matchLabels:
+      application: skupper-controller
+  template:
+    spec:
+      containers:
+        - name: controller
+          image: registry.redhat.io/service-interconnect/skupper-controller-rhel9@${CONTROLLER_SHA}

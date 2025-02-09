@@ -93,7 +93,6 @@ echo "VERSION:                                          ${VERSION}"
 echo "FULL_VERSION:                                     ${FULL_VERSION}"
 echo "PREVIOUS_VERSION:                                 ${PREVIOUS_VERSION}"
 echo "PRODUCT_VERSION:                                  ${PRODUCT_VERSION}"
-echo "PRODUCT_VERSION_Z:                                ${PRODUCT_VERSION_Z}"
 echo "UPSTREAM_CLONE_URL:                               ${UPSTREAM_CLONE_URL}"
 echo "UPSTREAM_CLONE_SHA:                               ${UPSTREAM_CLONE_SHA}"
 echo "MANIFESTS_DIR:                                    ${MANIFESTS_DIR}"
@@ -111,28 +110,30 @@ echo "*****************************************************"
 ###############################################################################
 ###############################################################################
 # Clone upstream repo 
-git config --global core.sshCommand 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-rm -fr upstream
-git clone "${UPSTREAM_CLONE_URL}" upstream
-rc=$?
-if [[ $rc -ne 0 ]]; then
-   echo "ERROR: Could not clone upstream release repo."
-   exit 2
-fi
-pushd upstream && git checkout "${UPSTREAM_CLONE_SHA}"
-popd
+#git config --global core.sshCommand 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+#rm -fr upstream
+#git clone "${UPSTREAM_CLONE_URL}" upstream
+#rc=$?
+#if [[ $rc -ne 0 ]]; then
+#   echo "ERROR: Could not clone upstream release repo."
+#   exit 2
+#fi
+#pushd upstream && git checkout "${UPSTREAM_CLONE_SHA}"
+#popd
 
 # remove old
-rm -rf config/crd
-rm -rf config/rbac
-rm -rf config/samples
+#rm -rf config/crd
+#rm -rf config/rbac
+#rm -rf config/samples
 
 # copy crd, rbac and samples config
-cp -R upstream/config/crd config
-cp -R upstream/config/rbac config
-cp -R upstream/config/samples config
+#cp -R upstream/config/crd config
+#cp -R upstream/config/rbac config
+#cp -R upstream/config/samples config
+#cp upstream/config/base/manager.yaml config/base
+#cp upstream/config/base/service_account.yaml config/base
 
-rm -Rf upstream
+#rm -Rf upstream
 
 ###############################################################################
 ###############################################################################
@@ -156,6 +157,10 @@ else
   retrieveBrewBuilds
 fi
 
+export CONTROLLER_SHA
+export SKUPPER_ROUTER_SHA
+export CLI_SHA
+export KUBE_ADAPTOR_SHA
 # csv="config/manifests/patch-env-var-images.yaml"
 # if [[ -n "${CONTROLLER_SHA}" ]]; then
 #     sed -ri "s#(registry.redhat.io/service-interconnect/skupper-controller-rhel9@).*#\1${CONTROLLER_SHA}#g" ${csv} || error "Error updating controller image SHA"
@@ -181,10 +186,24 @@ fi
 
 ###############################################################################
 ###############################################################################
+#sed "s/UPSTREAM_CLONE_SHA/${UPSTREAM_CLONE_SHA}/g" ./config/manifests/kustomization.template.yaml > ./config/manifests/kustomization.yaml
+
+
+envsubst < ./config/manifests/kustomization.yaml.in > ./config/manifests/kustomization.yaml
+envsubst < ./config/manifests/bases/skupper-operator.clusterserviceversion.yaml.in > ./config/manifests/bases/skupper-operator.clusterserviceversion.yaml
+envsubst < ./config/manifests/patch-annotations.yaml.in > ./config/manifests/patch-annotations.yaml
+envsubst < ./config/manifests/patch-labels.yaml.in > ./config/manifests/patch-labels.yaml
+envsubst < ./config/manifests/patch-image.yaml.in > ./config/manifests/patch-image.yaml
+envsubst < ./config/manifests/patch-env-var-images.yaml.in > ./config/manifests/patch-env-var-images.yaml
+envsubst < ./config/manifests/patch-related-images.yaml.in > ./config/manifests/patch-related-images.yaml
+
 csv_out="./bundle/manifests/skupper-operator.clusterserviceversion.yaml"
 rm -rf bundle
-kubectl kustomize config/manifests | operator-sdk generate bundle -q --overwrite --version $FULL_VERSION --use-image-digests --channels $BUNDLE_CHANNELS --default-channel $BUNDLE_DEFAULT_CHANNEL
+kubectl kustomize config/manifests | operator-sdk generate bundle -q --overwrite --version $FULL_VERSION --channels $BUNDLE_CHANNELS --default-channel $BUNDLE_DEFAULT_CHANNEL
 sed -i 's/registry-proxy.engineering.redhat.com\/rh-osbs\/service-interconnect/registry.redhat.io\/service-interconnect\/skupper/g' ${csv_out}
 operator-sdk bundle validate ./bundle
+
+rm ./config/manifests/*.yaml
+rm ./config/manifests/bases/*.yaml
 
 exit 0
