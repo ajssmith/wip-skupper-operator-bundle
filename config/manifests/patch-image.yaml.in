@@ -10,4 +10,4 @@ spec:
     spec:
       containers:
         - name: controller
-          image: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9:2.0.0-3
+          image: registry.redhat.io/service-interconnect/skupper-controller-rhel9@${CONTROLLER_SHA}

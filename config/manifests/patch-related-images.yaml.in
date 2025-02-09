@@ -1,0 +1,15 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  name: skupper-operator.v2.0.0-rc1-rh-1
+  namespace: placeholder
+spec:
+  relatedImages:
+    - image: registry.redhat.io/service-interconnect/skupper-skupper-router-rhel9@${SKUPPER_ROUTER_SHA}
+      name: skupper_router_image
+    - image: registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9@${KUBE_ADAPTOR_SHA}
+      name: skupper_kube_adaptor_image
+    - image: registry.redhat.io/service-interconnect/skupper-controller-rhel9@${CONTROLLER_SHA}
+      name: skupper_controller_image  
+    - image: registry.redhat.io/service-interconnect/skupper-cli-rhel9@${CLI_SHA}
+      name: skupper_cli_image

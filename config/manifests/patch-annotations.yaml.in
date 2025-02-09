@@ -2,6 +2,11 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
+    olm.skipRange: '>2.0.0-rh-rc0-1'
+    description: Red Hat Service Interconnect Operator provides the ability to create a service network
+    operators.openshift.io/valid-subscription: '["Red Hat Service Interconnect"]'
+    operators.openshift.io/infrastructure-features: '["disconnected"]'
+    support: Red Hat
     operators.openshift.io/valid-subscription: '["Red Hat Service Interconnect"]'
     operators.openshift.io/infrastructure-features: '["disconnected"]'
     features.operators.openshift.io/disconnected: "true" # Specify whether an Operator leverages the spec.relatedImages CSV field and can run without an internet connection by referring to any related image by its digest.
@@ -14,5 +19,5 @@ metadata:
     features.operators.openshift.io/cnf: "false" # Specify whether an Operator provides a Cloud-Native Network Function (CNF) Kubernetes plugin.
     features.operators.openshift.io/cni: "false" # Specify whether an Operator provides a Container Network Interface (CNI) Kubernetes plugin.
     features.operators.openshift.io/csi: "false" # Specify whether an Operator provides a Container Storage Interface (CSI) Kubernetes plugin.
-  name: skupper-operator.v2.0.0-rc1-rh-1
+  name: skupper-operator.v${FULL_VERSION}
   namespace: placeholder
