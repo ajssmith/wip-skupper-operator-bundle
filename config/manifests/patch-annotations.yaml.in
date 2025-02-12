@@ -2,7 +2,7 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
-    olm.skipRange: '>2.0.0-rh-rc0-1'
+    olm.skipRange: "${OLM_SKIP_RANGE}"
     description: Red Hat Service Interconnect Operator provides the ability to create a service network
     operators.openshift.io/valid-subscription: '["Red Hat Service Interconnect"]'
     operators.openshift.io/infrastructure-features: '["disconnected"]'
