@@ -12,7 +12,7 @@ spec:
         control-plane: controller-manager
         com.company: Red_Hat
         rht.prod_name: Red_Hat_Service_Interconnect
-        rht.prod_ver: ${PRODUCT_VERSION}
+        rht.prod_ver: '${PRODUCT_VERSION}'
         rht.comp: skupper-operator
-        rht.comp_ver: ${FULL_VERSION}
+        rht.comp_ver: '${FULL_VERSION}'
         rht.comp_t: application  

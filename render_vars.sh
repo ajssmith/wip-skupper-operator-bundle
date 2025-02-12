@@ -1,13 +1,12 @@
 export PRODUCT_VERSION="2.0"
-export UPSTREAM_CLONE_URL=https://github.com/skupperproject/skupper.git
-export UPSTREAM_CLONE_SHA=1d1366b566b3fbe9e37b7aa02c8c7d0825687b8b
+export UPSTREAM_COMMIT=1d1366b566b3fbe9e37b7aa02c8c7d0825687b8b
 export MANIFESTS_DIR="bundle/manifests"
 export METADATA_DIR="bundle/metadata"
-export PREVIOUS_RELEASES_DIR="previous-releases"
 export REDHAT_REGISTRY="registry.redhat.io"
-export DOWNSTREAM_PROJECT_NAME="rhsi"
+export DOWNSTREAM_PRODUCT_NAME="service-interconnect"
 export FULL_VERSION=2.0.0-rc1-rh-1
 export REPLACED_VERSION=2.0.0-rc0-rh-1
+export OLM_SKIP_RANGE=">2.0.0-rc0-rh-1 <2.0.0-rc1-rh-1"
 export ERRATA_ID=145073
 
 # The versioning scheme available in the openshift versions label accepts:

@@ -39,19 +39,23 @@ spec:
     type: AllNamespaces
   keywords:
   - skupper
+  - rhsi
   - service
+  - interconnect
   - mesh
   - van
   links:
+  - name: Red Hat Service Interconnect
+    url: https://www.redhat.com/en/technologies/cloud-computing/service-interconnect
   - name: Skupper Operator
-    url: https://github.com/skupperproject/skupper-operator
+    url: https://redhat.com
   maintainers:
   - email: skupper@googlegroups.com
     name: Skupper Community
-  maturity: stable
+  maturity: alpha
   minKubeVersion: ${MIN_KUBE_VERSION}
   provider:
-    name: Skupper Project
+    name: Red Hat
     url: https://skupper.io
   selector: {}
   version: ${FULL_VERSION}

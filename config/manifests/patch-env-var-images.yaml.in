@@ -12,12 +12,10 @@ spec:
         - name: controller
           env:
             - name: SKUPPER_ROUTER_IMAGE
-              value: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-skupper-router-rhel9@${SKUPPER_ROUTER_SHA}
+              value: registry.redhat.io/service-interconnect/skupper-router-rhel9@${SKUPPER_ROUTER_SHA}
             - name: SKUPPER_ROUTER_IMAGE_PULL_POLICY
               value: Always
             - name: SKUPPER_KUBE_ADAPTOR_IMAGE
-              value: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-kube-adaptor-rhel9@${KUBE_ADAPTOR_SHA}
+              value: registry.redhat.io/service-interconnect/skupper-kube-adaptor-rhel9@${KUBE_ADAPTOR_SHA}
             - name: SKUPPER_KUBE_ADAPTOR_IMAGE_PULL_POLICY
               value: Always
-            - name: SKUPPER_CONTROLLER_IMAGE
-              value: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9@${CONTROLLER_SHA}

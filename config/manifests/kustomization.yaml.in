@@ -2,19 +2,13 @@
 # used to generate the 'manifests/' directory in a bundle.
 resources:
 - bases/skupper-operator.clusterserviceversion.yaml
-- "https://github.com/skupperproject/skupper/config/crd?ref=${UPSTREAM_CLONE_SHA}"
-- "https://github.com/skupperproject/skupper/config/rbac?ref=${UPSTREAM_CLONE_SHA}"
-- "https://github.com/skupperproject/skupper/config/base?ref=${UPSTREAM_CLONE_SHA}"
-- "https://github.com/skupperproject/skupper/config/samples?ref=${UPSTREAM_CLONE_SHA}"
-
-images:
-  - name: skupper-controller
-    newName: registry-proxy.engineering.redhat.com/rh-osbs/service-interconnect-controller-rhel9
-    newTag: ${CONTROLLER_SHA}
+- "https://github.com/skupperproject/skupper/config/crd?ref=${UPSTREAM_COMMIT}"
+- "https://github.com/skupperproject/skupper/config/rbac?ref=${UPSTREAM_COMMIT}"
+- "https://github.com/skupperproject/skupper/config/base?ref=${UPSTREAM_COMMIT}"
+- "https://github.com/skupperproject/skupper/config/samples?ref=${UPSTREAM_COMMIT}"
 
 patches:
   - path: patch-env-var-images.yaml
-  - path: patch-related-images.yaml
   - path: patch-image.yaml
   - path: patch-labels.yaml
   - path: patch-annotations.yaml

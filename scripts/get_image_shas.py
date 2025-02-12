@@ -15,7 +15,7 @@ parser.add_argument("--controller-build", required=False, help="skupper-controll
 parser.add_argument("--kube-adaptor-build", required=False, help="skupper-kube-adaptor brewkoji build")
 parser.add_argument("--cli-build", required=False, help="skupper-cli brewkoji build")
 parser.add_argument("--network-observer-build", required=False, help="skupper-network-observer brewkoji build")
-#parser.add_argument("--cli-build", required=False, help="skupper-cli brewkoji build")
+
 args = parser.parse_args()
 
 router_build = args.router_build
@@ -23,7 +23,6 @@ controller_build = args.controller_build
 kube_adaptor_build = args.kube_adaptor_build
 cli_build = args.cli_build
 network_observer_build = args.network_observer_build
-#cli_build = args.cli_build
 
 packages = [
     router_build,
